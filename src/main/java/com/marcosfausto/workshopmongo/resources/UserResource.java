@@ -3,7 +3,7 @@ package com.marcosfausto.workshopmongo.resources;
 import com.marcosfausto.workshopmongo.domain.User;
 import com.marcosfausto.workshopmongo.dto.UserDTO;
 import com.marcosfausto.workshopmongo.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
+@RequiredArgsConstructor
 public class UserResource {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -37,6 +38,12 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -4,6 +4,7 @@ import com.marcosfausto.workshopmongo.domain.User;
 import com.marcosfausto.workshopmongo.dto.UserDTO;
 import com.marcosfausto.workshopmongo.repository.UserRepository;
 import com.marcosfausto.workshopmongo.services.exception.ObjectNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
     public List<User> findAll() {
@@ -30,6 +31,11 @@ public class UserService {
 
     public User insert(User user) {
         return userRepository.insert(user);
+    }
+
+    public void delete(String id) {
+        findById(id);
+        userRepository.deleteById(id);
     }
 
 
