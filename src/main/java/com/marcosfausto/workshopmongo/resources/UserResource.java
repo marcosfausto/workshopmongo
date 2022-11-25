@@ -1,5 +1,6 @@
 package com.marcosfausto.workshopmongo.resources;
 
+import com.marcosfausto.workshopmongo.domain.Post;
 import com.marcosfausto.workshopmongo.domain.User;
 import com.marcosfausto.workshopmongo.dto.UserDTO;
 import com.marcosfausto.workshopmongo.services.UserService;
@@ -29,6 +30,12 @@ public class UserResource {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         return ResponseEntity.ok().body(new UserDTO(userService.findById(id)));
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 
     @RequestMapping(method = RequestMethod.POST)
